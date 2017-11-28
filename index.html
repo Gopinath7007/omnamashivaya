@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Babylon Template</title>
+
+      <style>
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script>
+
+   </head>
+
+   <body>
+
+    <canvas id="renderCanvas" touch-action="none"></canvas> //touch-action="none" for best results from PEP
+
+    <script>
+
+            var canvas = document.getElementById("renderCanvas"); // Get the canvas element 
+
+            var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
+
+            /******* Add the create scene function ******/
+         var createScene = function () {
+
+    // functions 
+    const createSkyBOx = () => {
+        const skybox = BABYLON.Mesh.CreateBox("skyBox", 5000, scene);
+        const skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+        skyboxMaterial.backFaceCulling = false;
+        skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("textures/skybox", scene);
+        skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+        skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+        skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+        skyboxMaterial.disableLighting = true;
+        skybox.material = skyboxMaterial;
+        return skybox; 
+    }
+    
+    const createGround = () => {
+        const templeGround =  new BABYLON.MeshBuilder.CreateGround('templeGround', { width: 100, height: 100, subdivisionX: 10, subdivisionY: 10  }, scene); 
+        templeGround.position.y = 100;
+        templeGround.position.y = 100;
+        return templeGround;
+    } 
+
+    const createSimha = () =>{
+       const newSimha = new BABYLON.MeshBuilder.CreateBox('simha', {size: 600, width: 500, height: 300, depth: 1000 }, scene);
+        const myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        newSimha.position.y = -300;
+        newSimha.position.z = -100;
+        return newSimha;   
+    }
+
+    const applyMaterial = () => {
+        const newMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        const newMa = new BABYLON.StandardMaterial("myMaterial3", scene);
+        newMa.diffuseTexture = new BABYLON.Texture("https://cdn.pixabay.com/photo/2017/08/12/11/18/sand-2634096_960_720.png", scene); 
+        newMaterial.diffuseTexture = new BABYLON.Texture("https://t3.ftcdn.net/jpg/01/20/31/36/240_F_120313610_h7qf0myYlnC8Ooy6gCvpMlWcASPNwWCU.jpg", scene);
+        soul.material = newMaterial;
+        world.material = newMaterial;
+        templeGround.material = newMa;
+        simHasanam.material = newMaterial;   
+    }
+    const createEarth = () => {
+        const earth = new BABYLON.MeshBuilder.CreateSphere('earth', { diameter: 100 } , scene, true);
+        var earthMaterial = new BABYLON.StandardMaterial('earth', scene);
+        earthMaterial.diffuseTexture = new BABYLON.Texture('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Nasa_land_ocean_ice_8192.jpg/1280px-Nasa_land_ocean_ice_8192.jpg', scene); 
+        earth.material = earthMaterial;
+        const marse = new BABYLON.MeshBuilder.CreateSphere('marse', { diameter: 100 } , scene, true);
+        var marseMaterial = new BABYLON.StandardMaterial('marseMaterial', scene);
+        marseMaterial.diffuseTexture = new BABYLON.Texture('https://i.pinimg.com/originals/bd/7e/57/bd7e575a80a12958ed625157327ffbfa.jpg', scene); 
+        marse.material = marseMaterial;
+        earth.position.y =  500;
+        earth.position.x = - 400;
+         marse.position.y =  300;
+        marse.position.x = - 700;
+        return { 
+            newEarth: earth,
+            newMarsh: marse,
+        };
+    }
+
+    const scene = new BABYLON.Scene(engine);
+    const camera = new BABYLON.ArcRotateCamera('camera1', 100, 400, 2000, new BABYLON.Vector3(2, 2, 2), scene);
+    camera.setTarget(new BABYLON.Vector3.Zero());
+    camera.attachControl(canvas, true);
+    const soul = new BABYLON.MeshBuilder.CreateCylinder('soul', { height: 500, width: 110, diameterTop: 300, diameterBottom: 300}, scene); 
+
+    const light = new BABYLON.HemisphericLight('light', BABYLON.Vector3(0,1,3), scene);
+    const world = new BABYLON.MeshBuilder.CreateSphere('world', { diameter: 300, arc: 12 }, scene);
+    const templeGround = createGround(); 
+    const simHasanam = createSimha();
+    soul.position.y = 13;
+    var material0 = new BABYLON.StandardMaterial("mat0", scene);
+    const { newEarth, newMarsh } = createEarth();
+    newEarth.rotate(BABYLON.Axis.Y, Math.PI / 2, BABYLON.Space.WORLD);
+    world.position.y = 250;   
+    const skyBox = createSkyBOx();
+    templeGround.position.y = -15
+    applyMaterial();
+
+    
+
+    //Creation of a plan
+    //(name of the plane, size, scene)
+    var plan = BABYLON.Mesh.CreatePlane("plane", 10.0, scene);
+    plan.position.x = 800;
+    //Creation of a cylinder
+    //(name, height, diameter, tessellation, scene, updatable)
+    
+    const ruleList = {
+        rules: ['rule1', 'rule2', 'rule3'],
+        rule1 :{
+        positionZ: 200, 
+        data: [
+            "rule1",
+            250,
+            30,
+            50,
+            scene, 
+            false
+        ], 
+        },
+        rule2 : {
+            positionZ: 150, 
+            data: [
+            "rule2",
+            250,
+            30,
+            50,
+            scene, 
+            false
+            ]
+        },
+        rule3 : {
+            positionZ: 100, 
+            data: [
+            "rule3",
+            250,
+            30,
+            50,
+            scene, 
+            false
+            ]
+        },
+      }
+    const createNama = () => {
+      const nama = new BABYLON.MeshBuilder.CreateCylinder('nama', { diameterTop: 0, diameterBottom:50, height: 150}, scene);
+      nama.position.x = -157;
+      nama.position.y = 180;
+      const namaTexture = new BABYLON.StandardMaterial('NamaTexture', scene);
+      namaTexture.diffuseTexture = new BABYLON.Texture('http://www.powerpointhintergrund.com/download/black-red-grunge-texture-at-dragway-2017-4253', scene);
+      nama.material = namaTexture;
+    }  
+    const createRule = (rule) => {
+      console.log(rule)
+      var torus = BABYLON.Mesh.CreateTorus(ruleList[rule].data[0], ruleList[rule].data[1], ruleList[rule].data[2], ruleList[rule].data[3], ruleList[rule].data[4], ruleList[rule].data[5], false);
+      torus.position.x = -23;
+      torus.position.y = ruleList[rule].positionZ;
+      // return torus;  
+    }
+    
+    // Creation of a torus
+    // (name, diameter, thickness, tessellation, scene, updatable)
+
+    // var rule1, rule2, rule3;
+    // createRule('rule1');
+    // createRule('rule3');
+    ruleList.rules.map(rule => {
+      createRule(rule);
+    })
+    createNama();
+    var music = new BABYLON.Sound("om", "http://dl.hindugodsongs.com/tamil/sivan/nama_shivaya/arunachalane.mp3", scene, null, { loop: true, autoplay: true });
+
+    var a = 0;
+        scene.beforeRender = function () {    
+            newEarth.rotate(new BABYLON.Vector3(0, 1, 0) , 0.01, BABYLON.Space.WORLD);
+            newMarsh.rotate(new BABYLON.Vector3(0, 1, 0) , 0.01, BABYLON.Space.WORLD);
+       };
+    return scene;
+};
+
+
+
+                /******* End of the create scene function ******/    
+
+                var scene = createScene(); //Call the createScene function
+
+            engine.runRenderLoop(function () { // Register a render loop to repeatedly render the scene
+                    scene.render();
+            });
+
+
+            window.addEventListener("resize", function () { // Watch for browser/canvas resize events
+                    engine.resize();
+            });
+    </script>
+
+   </body>
+
+</html>
